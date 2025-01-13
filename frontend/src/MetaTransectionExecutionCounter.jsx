@@ -3,194 +3,10 @@ import { ethers } from "ethers";
 
 const COUNTER_CONTRACT_ADDRESS = "0xa93aD20484DD8Bf0a76ca609f5c253aacC16a193";
 const EIP712MetaTransaction_CONTRACT_ADDRESS =
-  "0x3B2F5d445DD817bC5dAA19Efc0CB6AB0f6FF237c";
+  "0x5b80978E5a534a26e6e0b552da0c8B24ef6790A1";
 
-const counterABI = [
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "counters",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_address",
-        type: "address",
-      },
-    ],
-    name: "getCounter",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "increment",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
-
-const EIP712MetaTransactionAbi = [
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "version",
-        type: "string",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "userAddress",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "targetAddress",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "relayerAddress",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bytes",
-        name: "functionSignature",
-        type: "bytes",
-      },
-    ],
-    name: "MetaTransactionExecuted",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "userAddress",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "targetContractAddress",
-        type: "address",
-      },
-      {
-        internalType: "bytes",
-        name: "functionSignature",
-        type: "bytes",
-      },
-      {
-        internalType: "bytes32",
-        name: "sigR",
-        type: "bytes32",
-      },
-      {
-        internalType: "bytes32",
-        name: "sigS",
-        type: "bytes32",
-      },
-      {
-        internalType: "uint8",
-        name: "sigV",
-        type: "uint8",
-      },
-    ],
-    name: "executeMetaTransaction",
-    outputs: [
-      {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
-      },
-    ],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getName",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-    ],
-    name: "getNonce",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "nonce",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getVersion",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-];
+import Counter from "../../contract/artifacts/contracts/Counter.sol/Counter.json";
+import EIP712MetaTransaction from "../../contract/artifacts/contracts/EIP712MetaTransaction.sol/EIP712MetaTransaction.json";
 
 const MetaTransactionCounterComponent = () => {
   const [provider, setProvider] = useState(null);
@@ -242,14 +58,14 @@ const MetaTransactionCounterComponent = () => {
       // Initialize the EIP712 contract
       const EIP712Contract = new ethers.Contract(
         EIP712MetaTransaction_CONTRACT_ADDRESS,
-        EIP712MetaTransactionAbi,
+        EIP712MetaTransaction.abi,
         signer
       );
 
       // Initialize the Counter contract
       const CounterContract = new ethers.Contract(
         COUNTER_CONTRACT_ADDRESS,
-        counterABI,
+        Counter.abi,
         signer
       );
 
@@ -290,7 +106,7 @@ const MetaTransactionCounterComponent = () => {
       console.log("nonce.toString(): ", nonce.toString());
 
       const message = {
-        nonce: "0",
+        nonce: nonce.toString(),
         from: userAddress,
         target: COUNTER_CONTRACT_ADDRESS,
         functionSignature: functionSig,
@@ -318,12 +134,11 @@ const MetaTransactionCounterComponent = () => {
       return;
     }
 
-    const privateKey =
-      "0x21b36b222d4b22acc046701021ed748109afdff1df5170ee523dcfc386f4a6ef"; // Replace with your actual private key
+    const privateKey = "0x"; // Replace with your actual private key
 
     // Connect to a provider
     const provider = new ethers.JsonRpcProvider(
-      "https://eth-sepolia.g.alchemy.com/v2/Q8F6ajRM3Z4bFZz6VmEEydGZPS8fCSHJ"
+      "https://eth-sepolia.g.alchemy.com/v2/your-api-key"
     );
 
     // Create a signer
@@ -334,7 +149,7 @@ const MetaTransactionCounterComponent = () => {
 
       const EIP712Contract = new ethers.Contract(
         EIP712MetaTransaction_CONTRACT_ADDRESS,
-        EIP712MetaTransactionAbi,
+        EIP712MetaTransaction.abi,
         walletSigner
       );
 

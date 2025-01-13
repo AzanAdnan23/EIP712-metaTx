@@ -86,7 +86,7 @@ contract EIP712MetaTransaction is EIP712Base {
 
         // Append userAddress at the end to extract it from calling context
         (bool success, bytes memory returnData) = targetContractAddress.call(
-            abi.encodePacked(functionSignature, userAddress)
+            functionSignature
         );
 
         if (success == false) {
@@ -116,6 +116,7 @@ contract EIP712MetaTransaction is EIP712Base {
                     META_TRANSACTION_TYPEHASH,
                     metaTx.nonce,
                     metaTx.from,
+                    metaTx.target,
                     keccak256(metaTx.functionSignature)
                 )
             );

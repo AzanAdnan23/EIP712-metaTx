@@ -137,12 +137,11 @@ const MetaTransactionComponent = () => {
       return;
     }
 
-    const privateKey =
-      "0x21b36b222d4b22acc046701021ed748109afdff1df5170ee523dcfc386f4a6ef"; // Replace with your actual private key
+    const privateKey = "0x"; // Replace with your actual private key
 
     // Connect to a provider
     const provider = new ethers.JsonRpcProvider(
-      "https://eth-sepolia.g.alchemy.com/v2/Q8F6ajRM3Z4bFZz6VmEEydGZPS8fCSHJ"
+      "https://eth-sepolia.g.alchemy.com/v2/your-api-key"
     );
 
     // Create a signer
