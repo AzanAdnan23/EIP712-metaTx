@@ -20,6 +20,10 @@ contract EIP712MetaTransaction is EIP712Base {
 
     mapping(address => uint256) internal nonces;
 
+    // Contract `name` and `version`
+    string private _contractName;
+    string private _contractVersion;
+
     /*
      * Meta transaction structure.
      * No point of including value field here as if user is doing value transfer then he has the funds to pay for gas
@@ -35,7 +39,10 @@ contract EIP712MetaTransaction is EIP712Base {
     constructor(
         string memory name,
         string memory version
-    ) EIP712Base(name, version) {}
+    ) EIP712Base(name, version) {
+        _contractName = name;
+        _contractVersion = version;
+    }
 
     function convertBytesToBytes4(
         bytes memory inBytes
@@ -151,5 +158,19 @@ contract EIP712MetaTransaction is EIP712Base {
             sender = payable(msg.sender);
         }
         return sender;
+    }
+
+      /**
+     * @dev Returns the contract name.
+     */
+    function getName() external view returns (string memory) {
+        return _contractName;
+    }
+
+    /**
+     * @dev Returns the contract version.
+     */
+    function getVersion() external view returns (string memory) {
+        return _contractVersion;
     }
 }

@@ -2,7 +2,10 @@ const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
 module.exports = buildModule("DeployModule", (m) => {
   // Deploy Token contract
-  const Token = m.contract("EIP712MetaTransaction", ["IDk", "1.0"]);
+  const Token = m.contract("EIP712MetaTransaction", [
+    "EIP712MetaTransaction",
+    "1",
+  ]);
 
   return {
     Token,

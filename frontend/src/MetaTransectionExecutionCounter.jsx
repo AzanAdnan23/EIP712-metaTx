@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
 
-const USDT_CONTRACT_ADDRESS = "0x396Ce2Eed93b79AbB3241226E17Cc34136b7c492";
-const SPENDER_ADDRESS = "0x94fD63cA1282c4C645A6497a0aB32779604d1382"; // Address you
-const AMOUNT_TO_APPROVE = ethers.parseUnits("10", 6);
-
 const COUNTER_CONTRACT_ADDRESS = "0xa93aD20484DD8Bf0a76ca609f5c253aacC16a193";
 const EIP712MetaTransaction_CONTRACT_ADDRESS =
-  "0xafa24BE840312A282600125cB08E20ea87D30Ac5";
+  "0x3B2F5d445DD817bC5dAA19Efc0CB6AB0f6FF237c";
 
 const counterABI = [
   {
@@ -150,6 +146,19 @@ const EIP712MetaTransactionAbi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getName",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -163,6 +172,19 @@ const EIP712MetaTransactionAbi = [
         internalType: "uint256",
         name: "nonce",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getVersion",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -234,10 +256,13 @@ const MetaTransactionCounterComponent = () => {
       console.log("chainId: ", chainId);
       console.log("userAddress : ", userAddress);
 
+      const name = await EIP712Contract.getName();
+      console.log("name : ", name);
+
       // Prepare the EIP-712 typed data
       const domain = {
-        name: "IDk",
-        version: "1.0",
+        name: name,
+        version: "1",
         verifyingContract: EIP712MetaTransaction_CONTRACT_ADDRESS,
         salt: ethers.zeroPadValue(ethers.toBeHex(chainId), 32),
       };
@@ -265,7 +290,7 @@ const MetaTransactionCounterComponent = () => {
       console.log("nonce.toString(): ", nonce.toString());
 
       const message = {
-        nonce: nonce.toString(),
+        nonce: "0",
         from: userAddress,
         target: COUNTER_CONTRACT_ADDRESS,
         functionSignature: functionSig,
@@ -293,11 +318,12 @@ const MetaTransactionCounterComponent = () => {
       return;
     }
 
-    const privateKey = "0x"; // Replace with your actual private key
+    const privateKey =
+      "0x21b36b222d4b22acc046701021ed748109afdff1df5170ee523dcfc386f4a6ef"; // Replace with your actual private key
 
     // Connect to a provider
     const provider = new ethers.JsonRpcProvider(
-      "https://eth-sepolia.g.alchemy.com/v2/your-api-key"
+      "https://eth-sepolia.g.alchemy.com/v2/Q8F6ajRM3Z4bFZz6VmEEydGZPS8fCSHJ"
     );
 
     // Create a signer
@@ -305,11 +331,6 @@ const MetaTransactionCounterComponent = () => {
 
     try {
       setStatus("Executing meta-transaction...");
-
-      // Define USDT contract ABI (Meta-transaction functions)
-      const usdtAbi = [
-        "function executeMetaTransaction(address userAddress, bytes functionSignature, bytes32 sigR, bytes32 sigS, uint8 sigV) public payable returns (bytes)",
-      ];
 
       const EIP712Contract = new ethers.Contract(
         EIP712MetaTransaction_CONTRACT_ADDRESS,
