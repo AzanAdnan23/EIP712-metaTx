@@ -17,8 +17,8 @@ This is a React app that demonstrates how to perform Ethereum meta-transactions 
    ```
 
 2. **Contracts**:
-   - Counter Contract: `0xa93aD20484DD8Bf0a76ca609f5c253aacC16a193`
-   - EIP712MetaTransaction Contract: `0x5b80978E5a534a26e6e0b552da0c8B24ef6790A1`
+   - Counter Contract: `0x---`
+   - EIP712MetaTransaction Contract: `0x---`
 
 ## How It Works
 
