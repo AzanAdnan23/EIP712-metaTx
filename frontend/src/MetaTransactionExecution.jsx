@@ -5,9 +5,6 @@ const USDT_CONTRACT_ADDRESS = "0x396Ce2Eed93b79AbB3241226E17Cc34136b7c492";
 const SPENDER_ADDRESS = "0x94fD63cA1282c4C645A6497a0aB32779604d1382"; // Address you
 const AMOUNT_TO_APPROVE = ethers.parseUnits("10", 6);
 
-const COUNTER_CONTRACT_ADDRESS = "0x23E359623F1CEfE7E7C004cAe0df66a5B87e7618";
-const EIP712MetaTransaction = "0xcD1Cd23790E199E855e8AF9e628b750f232dBC88";
-
 const usdtAbi = [
   "function approve(address spender, uint256 amount) public returns (bool)",
   "function executeMetaTransaction(address userAddress, bytes functionSignature, uint8 v, bytes32 r, bytes32 s) public payable returns (bytes)",
